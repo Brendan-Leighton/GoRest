@@ -29,14 +29,12 @@ import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInC
  */
 public class DB {
 
-    private static String BEARER_TOKEN = "Bearer 83c4e73e9e36d27c15dd8ca7dd492c8b83be02acece4e80d3e46a876f6c7ecbc";
-
     public static void init() {
         RestAssured.baseURI = "https://gorest.co.in/public/v1/";
         requestSpecification = RestAssured.given()
                 .header("Accept", "application/json")
                 .header("Content-Type", "application/json")
-                .header("Authorization", "Bearer 83c4e73e9e36d27c15dd8ca7dd492c8b83be02acece4e80d3e46a876f6c7ecbc")
+                .header("Authorization", "Bearer " + Props.getProp("API_KEY"))
                 .log().all();
         RestAssured.responseSpecification = new ResponseSpecBuilder()
                 .log(LogDetail.ALL).build();
