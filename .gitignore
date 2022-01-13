@@ -19,9 +19,9 @@
 *.tar.gz
 *.rar
 
-# Sensitive Files #
- src/test/resources/hidden
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# Sensitive Files #
 /src/test/resources/hidden/
