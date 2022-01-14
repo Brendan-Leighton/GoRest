@@ -528,5 +528,14 @@ public class All_Tests {
         // VERIFY USER DELETED
         DB.getUser_byId(newUser.get("id"), 404);
     }
+    @Test
+    public void test_DeleteUser_without_id() {
+
+        // CREATE A USER
+        Map<String, String> newUser = DB.createUser();
+
+        // DELETE NEW USER
+        DB.deleteUser("", 404);
+    }
 
 }
