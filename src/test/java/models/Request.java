@@ -31,6 +31,16 @@ public abstract class Request {
         );
     }
 
+    public <T extends Response<?>> void assertNotEquals(T responseType) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+
+        JSONAssert.assertNotEquals(
+                mapper.writeValueAsString(this),
+                mapper.writeValueAsString(responseType.getData()),
+                JSONCompareMode.LENIENT
+        );
+    }
+
     public void init(Class<?> resType){
         RESPONSE_TYPE = resType;
     }
