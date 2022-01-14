@@ -409,4 +409,7 @@ public class DB {
     public static void deleteUser(String userId) {
         DB.delete("users/" + userId, 204);
     }
+    public static void deleteUser(String userId, int statusCode) {
+        DB.delete("users/" + userId, statusCode);
+    }
 }
