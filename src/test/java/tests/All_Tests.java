@@ -751,10 +751,51 @@ public class All_Tests {
         // VERIFY CHANGE
         firstUser.assertNotEquals(updatedUser);
     }
+
+    @Test
+    public void test_PutUser_without_name() throws JsonProcessingException {
+
+        // CREATE USER : compile data
+        Req_User firstUser = new Req_User();
+        firstUser.init(
+                "jenn",
+                "female",
+                "email@wmail.com",
+                "active"
+        );
+        // CREATE USER : query
+        Res_User firstUser_response = DB.query(firstUser).post("users")
+                .then().spec(responseSpecification)
+                .assertThat().statusCode(201)
+                .body(matchesJsonSchemaInClasspath("JsonSchemas/users.json"))
+                .extract().response().as(Res_User.class);
+
+        // UPDATE USER : compile new data
+        Req_User secondUser = new Req_User();
+        secondUser.setGender("male");
+        secondUser.setEmailUnique("email@email.com");
+        secondUser.setStatus("inactive");
+        // UPDATE USER : query
+        Res_User response = DB.query(secondUser).put("users/" + firstUser_response.getData().getId())
+                .then().spec(responseSpecification)
+                .assertThat().statusCode(200)
+                .body(matchesJsonSchemaInClasspath("JsonSchemas/users.json"))
+                .extract().response().as(Res_User.class);
+
+        // GET UPDATED USER
+        Res_User updatedUser = DB.query().get("users/" + firstUser_response
+                        .getData().getId())
+                .then().spec(responseSpecification)
+                .assertThat().statusCode(200)
+                .body(matchesJsonSchemaInClasspath("JsonSchemas/users.json"))
+                .extract().response().as(Res_User.class);
+
+        // ASSERT CHANGE
+        firstUser.assertNotEquals(updatedUser);
+    }
     /*
         PUT user <END>
      */
-
 
     //*************************
     //*************************
