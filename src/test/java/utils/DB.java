@@ -9,14 +9,12 @@ import io.restassured.filter.log.LogDetail;
 import io.restassured.specification.RequestSpecification;
 import models.Req_User;
 import models.Request;
-import models.Res_User;
 import models.Response;
 import org.json.JSONObject;
 import org.testng.Assert;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -50,7 +48,7 @@ public class DB {
         return requestSpecification;
     }
 
-    private static RequestSpecification query(Object requestBody) {
+    public static RequestSpecification query(Object requestBody) {
         return requestSpecification.body(requestBody);
     }
 
@@ -98,7 +96,7 @@ public class DB {
         return DB.query(requestBody).post(path)
                 .then().spec(responseSpecification)
                 .assertThat().statusCode(expectedStatusCode)
-                .body(matchesJsonSchemaInClasspath(jsonSchemaPath + ".json"))
+                .body(matchesJsonSchemaInClasspath("JsonSchemas/" + jsonSchemaPath + ".json"))
                 .extract().response().asString();
     }
 
@@ -120,7 +118,7 @@ public class DB {
         return DB.query(requestBody).patch(path)
                 .then().spec(responseSpecification)
                 .assertThat().statusCode(expectedStatusCode)
-                .body(matchesJsonSchemaInClasspath("users.json"))
+                .body(matchesJsonSchemaInClasspath("JsonSchemas/users.json"))
                 .extract().response().asString();
     }
 
@@ -313,7 +311,7 @@ public class DB {
 //        User user = new User(
 //                "Mr Meeseeks",
 //                "male",
-//                "\"LifeIsShort" + System.currentTimeMillis() + "@mail.com\"",
+//                "LifeIsShort" + System.currentTimeMillis() + "@mail.com",
 //                "active");
 
         String response = DB.post("users", requestBody, 201);

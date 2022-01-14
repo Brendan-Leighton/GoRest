@@ -36,6 +36,6 @@ public class Req_Comments extends Request{
 
     @Override
     public String getJsonSchema() {
-        return "comments.json";
+        return "JsonSchemas/comments.json";
     }
 }

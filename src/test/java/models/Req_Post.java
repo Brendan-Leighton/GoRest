@@ -27,6 +27,6 @@ public class Req_Post extends Request {
 
     @Override
     public String getJsonSchema() {
-        return "posts.json";
+        return "JsonSchemas/posts.json";
     }
 }

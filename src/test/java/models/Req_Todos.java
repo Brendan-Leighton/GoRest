@@ -27,6 +27,6 @@ public class Req_Todos extends Request{
 
     @Override
     public String getJsonSchema() {
-        return "todos.json";
+        return "JsonSchemas/todos.json";
     }
 }

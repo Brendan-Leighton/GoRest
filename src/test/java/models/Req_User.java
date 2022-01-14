@@ -1,7 +1,5 @@
 package models;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
 
 public class Req_User extends Request{
 
@@ -58,6 +56,6 @@ public class Req_User extends Request{
 
     @Override
     public String getJsonSchema() {
-        return "users.json";
+        return "JsonSchemas/users.json";
     }
 }
