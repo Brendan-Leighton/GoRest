@@ -188,7 +188,7 @@ public class All_Tests {
      */
     @Test
     public void test_CreateUser_fieldName_BLANK() {
-
+        // CREATE USER
         Req_User newUser = new Req_User();
         newUser.init();
         newUser.setName("");
@@ -196,6 +196,7 @@ public class All_Tests {
         newUser.setEmailUnique("email@email.com");
         newUser.setStatus("active");
 
+        //  QUERY
         String response = DB.query(newUser).post("users")
                 .then().spec(responseSpecification)
                 .assertThat().statusCode(422)
@@ -205,7 +206,7 @@ public class All_Tests {
 
     @Test
     public void test_CreateUser_fieldGender_BLANK() {
-
+        // CREATE USER
         Req_User newUser = new Req_User();
         newUser.init();
         newUser.setName("Ila Vainal");
@@ -213,6 +214,7 @@ public class All_Tests {
         newUser.setEmailUnique("email@email.com");
         newUser.setStatus("active");
 
+        //  QUERY
         String response = DB.query(newUser).post("users")
                 .then().spec(responseSpecification)
                 .assertThat().statusCode(422)
@@ -222,7 +224,7 @@ public class All_Tests {
 
     @Test
     public void test_CreateUser_fieldEmail_BLANK() {
-
+        // CREATE USER
         Req_User newUser = new Req_User();
         newUser.init();
         newUser.setName("Ila Vainal");
@@ -230,6 +232,7 @@ public class All_Tests {
         newUser.setEmail("");
         newUser.setStatus("active");
 
+        //  QUERY
         String response = DB.query(newUser).post("users")
                 .then().spec(responseSpecification)
                 .assertThat().statusCode(422)
@@ -239,7 +242,7 @@ public class All_Tests {
 
     @Test
     public void test_CreateUser_fieldStatus_BLANK() {
-
+        // CREATE USER
         Req_User newUser = new Req_User();
         newUser.init();
         newUser.setName("Ila Vainal");
@@ -247,6 +250,7 @@ public class All_Tests {
         newUser.setEmailUnique("email@email.com");
         newUser.setStatus("");
 
+        //  QUERY
         String response = DB.query(newUser).post("users")
                 .then().spec(responseSpecification)
                 .assertThat().statusCode(422)
@@ -262,7 +266,6 @@ public class All_Tests {
      */
     @Test
     public void test_createUserPost() {
-
         // CREATE USER
         Map<String, String> newUser = DB.createUser();
 
@@ -280,7 +283,6 @@ public class All_Tests {
      */
     @Test
     public void test_CreatePost_fieldTitle_BLANK() {
-
         // CREATE USER
         Map<String, String> newUser = DB.createUser();
 
@@ -298,7 +300,6 @@ public class All_Tests {
 
     @Test
     public void test_CreatePost_fieldBody_BLANK() {
-
         // CREATE USER
         Map<String, String> newUser = DB.createUser();
 
@@ -322,7 +323,6 @@ public class All_Tests {
      */
     @Test
     public void test_createPostsComment() {
-
         // CREATE a user
         Map<String, String> newUser = DB.createUser();
 
@@ -348,7 +348,6 @@ public class All_Tests {
      */
     @Test
     public void test_createComment_withBlank_name() {
-
         // CREATE a user
         Map<String, String> newUser = DB.createUser();
 
@@ -370,7 +369,6 @@ public class All_Tests {
 
     @Test
     public void test_createComment_withBlank_email() {
-
         // CREATE a user
         Map<String, String> newUser = DB.createUser();
 
@@ -663,7 +661,6 @@ public class All_Tests {
 
     @Test
     public void test_PatchUser_fields_gender_email_status() throws JsonProcessingException {
-
         // CREATE USER : compile data
         Req_User firstUser = new Req_User();
         firstUser.init(
