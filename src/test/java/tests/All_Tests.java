@@ -2,8 +2,6 @@ package tests;
 // JAVA
 import java.util.Map;
 // TEST-NG
-import models.Req_Post;
-import models.Req_User;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -11,6 +9,8 @@ import org.testng.annotations.Test;
 import com.fasterxml.jackson.core.JsonProcessingException;
 // CUSTOM
 import utils.DB;
+import models.Req_Post;
+import models.Req_User;
 
 import static io.restassured.RestAssured.responseSpecification;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
