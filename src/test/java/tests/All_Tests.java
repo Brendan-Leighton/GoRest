@@ -1,17 +1,14 @@
 package tests;
 // JAVA
-
-import java.util.Date;
 import java.util.Map;
 // TEST-NG
-import models.*;
-import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 // OTHER
 import com.fasterxml.jackson.core.JsonProcessingException;
 // CUSTOM
 import utils.DB;
+import models.*;
 
 import static io.restassured.RestAssured.responseSpecification;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
