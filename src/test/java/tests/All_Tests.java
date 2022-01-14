@@ -2,13 +2,18 @@ package tests;
 // JAVA
 import java.util.Map;
 // TEST-NG
-import com.fasterxml.jackson.core.JsonProcessingException;
+import models.Req_Post;
+import models.Req_User;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 // OTHER
+import com.fasterxml.jackson.core.JsonProcessingException;
 // CUSTOM
 import utils.DB;
+
+import static io.restassured.RestAssured.responseSpecification;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 
 public class All_Tests {
 
@@ -128,7 +133,6 @@ public class All_Tests {
 
     @Test
     public void test_getPostsComments() {
-
         String postId = "4";
 
         DB.getCommentsForPost(postId);
@@ -177,18 +181,84 @@ public class All_Tests {
                 "active",
                 201
         );
+    }
+    /*
+        post USER <END>
+     */
 
-        // assert
-//        Assert.assertEquals(data.get("name"), "Mr Meeseeks");
+    /*
+        post USER : blank fields
+     */
+    @Test
+    public void test_CreateUser_fieldName_BLANK() {
+
+        Req_User newUser = new Req_User();
+        newUser.init();
+        newUser.setName("");
+        newUser.setGender("male");
+        newUser.setEmailUnique("email@email.com");
+        newUser.setStatus("active");
+
+        String response = DB.query(newUser).post("users")
+                .then().spec(responseSpecification)
+                .assertThat().statusCode(422)
+                .body(matchesJsonSchemaInClasspath("JsonSchemas/Blank_Field/name.json"))
+                .extract().response().asString();
     }
 
     @Test
-    public void test_CreateUser_fieldName_BLANK() {
-        Map<String, String> data = DB.createUser();
+    public void test_CreateUser_fieldGender_BLANK() {
 
-        // assert
-        Assert.assertEquals(data.get("name"), "Mr Meeseeks");
+        Req_User newUser = new Req_User();
+        newUser.init();
+        newUser.setName("Ila Vainal");
+        newUser.setGender("");
+        newUser.setEmailUnique("email@email.com");
+        newUser.setStatus("active");
+
+        String response = DB.query(newUser).post("users")
+                .then().spec(responseSpecification)
+                .assertThat().statusCode(422)
+                .body(matchesJsonSchemaInClasspath("JsonSchemas/Blank_Field/gender.json"))
+                .extract().response().asString();
     }
+
+    @Test
+    public void test_CreateUser_fieldEmail_BLANK() {
+
+        Req_User newUser = new Req_User();
+        newUser.init();
+        newUser.setName("Ila Vainal");
+        newUser.setGender("female");
+        newUser.setEmail("");
+        newUser.setStatus("active");
+
+        String response = DB.query(newUser).post("users")
+                .then().spec(responseSpecification)
+                .assertThat().statusCode(422)
+                .body(matchesJsonSchemaInClasspath("JsonSchemas/Blank_Field/email.json"))
+                .extract().response().asString();
+    }
+
+    @Test
+    public void test_CreateUser_fieldStatus_BLANK() {
+
+        Req_User newUser = new Req_User();
+        newUser.init();
+        newUser.setName("Ila Vainal");
+        newUser.setGender("male");
+        newUser.setEmailUnique("email@email.com");
+        newUser.setStatus("");
+
+        String response = DB.query(newUser).post("users")
+                .then().spec(responseSpecification)
+                .assertThat().statusCode(422)
+                .body(matchesJsonSchemaInClasspath("JsonSchemas/Blank_Field/status.json"))
+                .extract().response().asString();
+    }
+    /*
+        post USER : blank fields <END>
+     */
 
     /*
         post user's POST
@@ -206,6 +276,45 @@ public class All_Tests {
                 "}";
 
         DB.createPost(newUser.get("id"), requestBody);
+    }
+
+    /*
+        post user's POST : blank fields
+     */
+    @Test
+    public void test_CreatePost_fieldTitle_BLANK() {
+
+        // CREATE USER
+        Map<String, String> newUser = DB.createUser();
+
+        Req_Post newPost = new Req_Post();
+        newPost.init();
+        newPost.setTitle("");
+        newPost.setBody("Ma Body");
+
+        String response = DB.query(newPost).post("users/" + newUser.get("id") + "/posts")
+                .then().spec(responseSpecification)
+                .assertThat().statusCode(422)
+                .body(matchesJsonSchemaInClasspath("JsonSchemas/Blank_Field/title.json"))
+                .extract().response().asString();
+    }
+
+    @Test
+    public void test_CreatePost_fieldBody_BLANK() {
+
+        // CREATE USER
+        Map<String, String> newUser = DB.createUser();
+
+        Req_Post newPost = new Req_Post();
+        newPost.init();
+        newPost.setTitle("Ma Title");
+        newPost.setBody("");
+
+        String response = DB.query(newPost).post("users/" + newUser.get("id") + "/posts")
+                .then().spec(responseSpecification)
+                .assertThat().statusCode(422)
+                .body(matchesJsonSchemaInClasspath("JsonSchemas/Blank_Field/body.json"))
+                .extract().response().asString();
     }
 
     /*
