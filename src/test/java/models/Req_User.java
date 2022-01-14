@@ -8,6 +8,14 @@ public class Req_User extends Request{
     private String email;
     private String status;
 
+    public void init(String name, String gender, String email, String status) {
+        this.name = name;
+        this.gender = gender;
+        this.email = makeEmailUnique(email);
+        this.status = status;
+        super.init(Res_User.class);
+    }
+
     public void init() {
         super.init(Res_User.class);
     }
