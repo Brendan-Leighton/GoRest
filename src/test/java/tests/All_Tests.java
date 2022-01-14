@@ -1,9 +1,11 @@
 package tests;
 // JAVA
 
+import java.util.Date;
 import java.util.Map;
 // TEST-NG
 import models.Req_Comments;
+import models.Req_Todos;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -317,6 +319,9 @@ public class All_Tests {
                 .body(matchesJsonSchemaInClasspath("JsonSchemas/Blank_Field/body.json"))
                 .extract().response().asString();
     }
+    /*
+        post user's POST : blank fields <END>
+     */
 
     /*
         post post's COMMENT
@@ -344,6 +349,9 @@ public class All_Tests {
         }
     }
 
+    /*
+        post COMMENT : blank fields
+     */
     @Test
     public void test_createComment_withBlank_name() {
 
@@ -409,6 +417,12 @@ public class All_Tests {
                 .body(matchesJsonSchemaInClasspath("JsonSchemas/Blank_Field/body.json"))
                 .extract().response().asString();
     }
+    /*
+        post COMMENT : blank fields <END>
+     */
+    /*
+        post post's COMMENT <END>
+     */
 
     /*
         post user's TO-DO
@@ -427,6 +441,48 @@ public class All_Tests {
 
         DB.createTodo(newUser.get("id"), requestBody);
     }
+
+    /*
+        post TO-DO : blank fields
+     */
+    @Test
+    public void test_createTodo_withBlank_title() {
+
+        // CREATE a user
+        Map<String, String> newUser = DB.createUser();
+
+        Req_Todos request = new Req_Todos();
+        request.init();
+        request.setTitle("");
+        request.setStatus("pending");
+
+        String response = DB.query(request).post("users/" + newUser.get("id") + "/todos")
+                .then().spec(responseSpecification)
+                .assertThat().statusCode(422)
+                .body(matchesJsonSchemaInClasspath("JsonSchemas/Blank_Field/title.json"))
+                .extract().response().asString();
+    }
+
+    @Test
+    public void test_createTodo_withBlank_status() {
+
+        // CREATE a user
+        Map<String, String> newUser = DB.createUser();
+
+        Req_Todos request = new Req_Todos();
+        request.init();
+        request.setTitle("title");
+        request.setStatus("");
+
+        String response = DB.query(request).post("users/" + newUser.get("id") + "/todos")
+                .then().spec(responseSpecification)
+                .assertThat().statusCode(422)
+                .body(matchesJsonSchemaInClasspath("JsonSchemas/Blank_Field/status.json"))
+                .extract().response().asString();
+    }
+    /*
+        post TO-DO : blank fields <END>
+     */
 
     //*************************
     //*************************
