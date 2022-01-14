@@ -1,9 +1,12 @@
 package models;
 
+import java.util.Date;
+
 public class Req_Todos extends Request{
 
     private String title;
     private String status;
+    private Date date;
 
     public void init() {
         super.init(Res_Todos.class);
@@ -23,6 +26,14 @@ public class Req_Todos extends Request{
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     @Override
