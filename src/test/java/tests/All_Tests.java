@@ -1,7 +1,9 @@
 package tests;
 // JAVA
+
 import java.util.Map;
 // TEST-NG
+import models.Req_Comments;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -113,7 +115,7 @@ public class All_Tests {
     public void test_getPostsByUserId() {
 
         // CREATE a user
-        Map<String,String> newUser = DB.createUser();
+        Map<String, String> newUser = DB.createUser();
         // CREATE a post
         DB.createPost(newUser.get("id"));
         // GET posts for new user
@@ -146,7 +148,7 @@ public class All_Tests {
     public void test_getTodoById() {
 
         // CREATE a user
-        Map<String,String> newUser = DB.createUser();
+        Map<String, String> newUser = DB.createUser();
 
         // CREATE request body
         String requestBody = "{" +
@@ -160,7 +162,6 @@ public class All_Tests {
         // GET USER'S TODOS
         DB.getTodoById(newTodo.get("id"));
     }
-
 
 
     //*************************
@@ -324,14 +325,14 @@ public class All_Tests {
     public void test_createPostsComment() {
 
         // CREATE a user
-        Map<String,String> newUser = DB.createUser();
+        Map<String, String> newUser = DB.createUser();
 
         // CREATE new post
         Map<String, String> newPost = DB.createPost(newUser.get("id"));
 
 
         // POST MULTIPLE COMMENTS
-        for (int iteration = 1; iteration < 5 ; iteration++) {
+        for (int iteration = 1; iteration < 5; iteration++) {
             // CREATE request body
             String requestBody = "{" +
                     "    \"name\": \"Drowning Pool\"," +
@@ -341,6 +342,72 @@ public class All_Tests {
 
             DB.createPostComment(newPost.get("id"), requestBody);
         }
+    }
+
+    @Test
+    public void test_createComment_withBlank_name() {
+
+        // CREATE a user
+        Map<String, String> newUser = DB.createUser();
+
+        // CREATE new post
+        Map<String, String> newPost = DB.createPost(newUser.get("id"));
+
+        Req_Comments request = new Req_Comments();
+        request.init();
+        request.setName("");
+        request.setEmail("email@email.com");
+        request.setBody("Let this body hit the floor");
+
+        String response = DB.query(request).post("posts/" + newPost.get("id") + "/comments")
+                .then().spec(responseSpecification)
+                .assertThat().statusCode(422)
+                .body(matchesJsonSchemaInClasspath("JsonSchemas/Blank_Field/name.json"))
+                .extract().response().asString();
+    }
+
+    @Test
+    public void test_createComment_withBlank_email() {
+
+        // CREATE a user
+        Map<String, String> newUser = DB.createUser();
+
+        // CREATE new post
+        Map<String, String> newPost = DB.createPost(newUser.get("id"));
+
+        Req_Comments request = new Req_Comments();
+        request.init();
+        request.setName("Drowning Pool");
+        request.setEmail("");
+        request.setBody("Let this body hit the floor");
+
+        String response = DB.query(request).post("posts/" + newPost.get("id") + "/comments")
+                .then().spec(responseSpecification)
+                .assertThat().statusCode(422)
+                .body(matchesJsonSchemaInClasspath("JsonSchemas/Blank_Field/email.json"))
+                .extract().response().asString();
+    }
+
+    @Test
+    public void test_createComment_withBlank_body() {
+
+        // CREATE a user
+        Map<String, String> newUser = DB.createUser();
+
+        // CREATE new post
+        Map<String, String> newPost = DB.createPost(newUser.get("id"));
+
+        Req_Comments request = new Req_Comments();
+        request.init();
+        request.setName("Drowning Pool");
+        request.setEmail("email@email.com");
+        request.setBody("");
+
+        String response = DB.query(request).post("posts/" + newPost.get("id") + "/comments")
+                .then().spec(responseSpecification)
+                .assertThat().statusCode(422)
+                .body(matchesJsonSchemaInClasspath("JsonSchemas/Blank_Field/body.json"))
+                .extract().response().asString();
     }
 
     /*
@@ -397,7 +464,7 @@ public class All_Tests {
     public void test_DeleteUser() {
 
         // CREATE A USER
-        Map<String,String> newUser = DB.createUser();
+        Map<String, String> newUser = DB.createUser();
 
         // DELETE NEW USER
         DB.deleteUser(newUser.get("id"));
