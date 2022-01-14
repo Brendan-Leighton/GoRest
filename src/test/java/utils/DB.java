@@ -44,7 +44,7 @@ public class DB {
     //*************************
     //*************************
 
-    private static RequestSpecification query() {
+    public static RequestSpecification query() {
         return requestSpecification;
     }
 
